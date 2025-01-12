@@ -12,9 +12,9 @@ public class PersonDAO {
     private List<Person> people;
     {
         people = new ArrayList<>();
-        people.add(new Person(PEOPLE_COUNT++, "Vlad"));
-        people.add(new Person(PEOPLE_COUNT++, "Dasha"));
-        people.add(new Person(PEOPLE_COUNT++, "Egor"));
+        people.add(new Person(PEOPLE_COUNT++, "Vlad", 20, "vlad@yandex.ru"));
+        people.add(new Person(PEOPLE_COUNT++, "Dasha", 19, "dasha@gmail.com"));
+        people.add(new Person(PEOPLE_COUNT++, "Egor", 21, "egor@gmail.com"  ));
     }
 
     public List<Person> index() {
