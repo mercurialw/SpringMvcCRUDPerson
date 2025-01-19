@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDAO {
@@ -26,19 +27,24 @@ public class PersonDAO {
         return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
     }
 
+    public Optional<Person> show(String mail) {
+        return jdbcTemplate.query("SELECT * FROM Person WHERE mail=?", new Object[]{mail}, new BeanPropertyRowMapper<>(Person.class))
+                .stream().findAny();
+    }
+
     public Person show(int id) {
         return jdbcTemplate.query("SELECT * FROM Person WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
                 .stream().findAny().orElse(null);
     }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person(name, age, mail) VALUES(?, ?, ?)", person.getName(), person.getAge(),
-                person.getMail());
+        jdbcTemplate.update("INSERT INTO Person(name, age, mail, address) VALUES(?, ?, ?, ?)", person.getName(), person.getAge(),
+                person.getMail(), person.getAddress());
     }
 
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE Person SET name=?, age=?, mail=? WHERE id=?", updatedPerson.getName(),
-                updatedPerson.getAge(), updatedPerson.getMail(), id);
+        jdbcTemplate.update("UPDATE Person SET name=?, age=?, mail=?, address=? WHERE id=?", updatedPerson.getName(),
+                updatedPerson.getAge(), updatedPerson.getMail(), updatedPerson.getAddress(), id);
     }
 
     public void delete(int id) {
@@ -86,7 +92,7 @@ public class PersonDAO {
     public List<Person> create1000People() {
         List<Person> list = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            list.add(new Person(i, "Name" + i, 30, "test" + i + "@gmail.com"));
+            list.add(new Person(i, "Name" + i, 30, "test" + i + "@gmail.com",  "some address"));
         }
         return list;
     }
